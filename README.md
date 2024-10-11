@@ -11,7 +11,7 @@ AWJ is a mobile application designed to enhance the hiking experience in the reg
 ## Launching Instructions
 1. Clone the repository:
    ```bash
-   [git clone https://github.com/2024-25_GP_16/AWJ.git](https://github.com/rgdkh/2024-25_GP_16.git)
+   git clone https://github.com/rgdkh/2024-25_GP_16.git
 2. Open the project in your preferred IDE (e.g., Android Studio or VS Code).
 3. Ensure Flutter SDK is installed and set up.
 4. Run the app on an emulator or physical device using:
