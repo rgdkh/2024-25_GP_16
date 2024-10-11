@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "607424767081",
+    "project_id": "awj-app-e5077",
+    "storage_bucket": "awj-app-e5077.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607424767081:android:38ffa44dfeeb8c25fc6ef8",
+        "android_client_info": {
+          "package_name": "awj.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5bTEn-9RMqyT0gUqLyidYDF1FIeTZLXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607424767081:android:5ba7154acac5fdd4fc6ef8",
+        "android_client_info": {
+          "package_name": "com.example.sign"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5bTEn-9RMqyT0gUqLyidYDF1FIeTZLXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607424767081:android:21c76377f8117248fc6ef8",
+        "android_client_info": {
+          "package_name": "com.mycompany.awjsignup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5bTEn-9RMqyT0gUqLyidYDF1FIeTZLXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
