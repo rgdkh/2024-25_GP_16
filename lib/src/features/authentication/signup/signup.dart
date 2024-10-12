@@ -14,34 +14,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _firestore = FirebaseFirestore.instance;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _nameController = TextEditingController();
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false; // Added variable for confirm password visibility
 
   void _signUp() async {
-    
-     String email = _emailController.text;
-  if (!email.contains('@') || !email.contains('.')) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please enter a valid email address.')),
-    );
-    return; // Stop the sign-up process if the email is invalid
-  }
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    String confirmPassword = _confirmPasswordController.text;
+    String name = _nameController.text;
+
+    // Check for empty fields
+    if (name.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all fields.')),
+      );
+      return;
+    }
+
+    // Email validation
+    if (!email.contains('@') || !email.contains('.')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid email address.')),
+      );
+      return; // Stop the sign-up process if the email is invalid
+    }
+
+    // Password length validation
+    if (password.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password must be at least 8 characters long.')),
+      );
+      return;
+    }
+
+    // Check if passwords match
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Passwords do not match.')),
+      );
+      return;
+    }
+
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: email,
+        password: password,
       );
 
-      // Add user details to Firestore
       await _firestore.collection('users').doc(userCredential.user?.uid).set({
-        'email': _emailController.text,
+        'email': email,
+        'name': name,
       });
 
-      // Navigate to another screen or show success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('User registered successfully!')),
       );
     } catch (e) {
-      // Handle errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to register user: $e')),
       );
@@ -54,9 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text('Sign Up'),
         centerTitle: true,
@@ -68,7 +96,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Logo Placeholder
             Container(
               margin: EdgeInsets.only(bottom: 40),
               child: Image(
@@ -77,69 +104,94 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 100,
               ),
             ),
-            // Email Field
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: 'Name',
+                labelStyle: TextStyle(color: Color(0xFF2A3A26)),
+                border: UnderlineInputBorder( borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                enabledBorder:UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+              ),
+            ),
+            
+            SizedBox(height: 20),
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
                 labelStyle: TextStyle(color: Color(0xFF2A3A26)),
-                border: UnderlineInputBorder(
+                border: UnderlineInputBorder( borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                enabledBorder:UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF2A3A26)),
                 ),
-                suffixIcon: _emailController.text.isNotEmpty
-                    ? IconButton(
-                        icon: Icon(Icons.clear, color: Color(0xFF2A3A26)),
-                        onPressed: () {
-                          setState(() {
-                            _emailController.clear();
-                          });
-                        },
-                      )
-                    : null,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
               ),
-              onChanged: (value) {
-                setState(() {});
-              },
             ),
             SizedBox(height: 20),
-            // Password Field
             TextField(
               controller: _passwordController,
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                 labelText: 'Password',
                 labelStyle: TextStyle(color: Color(0xFF2A3A26)),
-                border: UnderlineInputBorder(
+                border: UnderlineInputBorder( borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                enabledBorder:UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF2A3A26)),
                 ),
                 suffixIcon: IconButton(
-                  icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Color(0xFF2A3A26),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
+                  icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off, color: Color(0xFF2A3A26)),
+                  onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
                 ),
               ),
             ),
             SizedBox(height: 20),
-            // Sign Up button
+            TextField(
+              controller: _confirmPasswordController,
+              obscureText: !_isConfirmPasswordVisible,
+              decoration: InputDecoration(
+                labelText: 'Confirm Password',
+                labelStyle: TextStyle(color: Color(0xFF2A3A26)),
+                border: UnderlineInputBorder( borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                enabledBorder:UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(_isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off, color: Color(0xFF2A3A26)),
+                  onPressed: () => setState(() => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
             SizedBox(
-              width: 250, // Fixed width for the button
-              height: 40, // Increase button height
+              width: 250,
+              height: 40,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF2A3A26), // Green background color for button
-                  foregroundColor: Color(0xFFEAE7D8), // Cream text color for button
+                  backgroundColor: Color(0xFF2A3A26),
+                  foregroundColor: Color(0xFFEAE7D8),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Rectangular shape with slight rounding
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 onPressed: _signUp,
-                child: Text('Sign Up', style: TextStyle(fontSize: 18)), // Increase text size
+                child: Text('Sign Up', style: TextStyle(fontSize: 18)),
               ),
             ),
           ],

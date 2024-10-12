@@ -58,6 +58,11 @@ class ForgotPasswordScreen extends StatelessWidget {
                 labelStyle: TextStyle(color: Color(0xFF2A3A26)),
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ), enabledBorder:UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2A3A26)),
                 ),
               ),
             ),

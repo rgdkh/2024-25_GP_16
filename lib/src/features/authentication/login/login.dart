@@ -19,6 +19,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Login method
 void signUserIn(BuildContext context) async {
+    // Check if either the email or password fields are empty
+  if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Please fill in all fields.')),
+    );
+    return; // Stop the sign-in process if any field is empty
+  }
   try {
     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: usernameController.text,

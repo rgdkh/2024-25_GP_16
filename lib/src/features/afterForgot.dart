@@ -82,7 +82,12 @@ class _AfterForgotState extends State<AfterForgot> {
             width: 250,
               height: 40,// Increase button height
               child: ElevatedButton(
-              onPressed: resendPasswordResetEmail,
+             onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF2A3A26), // Green background color for button
                   foregroundColor: Color(0xFFEAE7D8), // Cream text color for button
