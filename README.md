@@ -17,3 +17,5 @@ AWJ is a mobile application designed to enhance the hiking experience in the reg
 4. Run the app on an emulator or physical device using:
  ```bash
 flutter run
+
+"we replace our API keys with "OUR_API_KEY"
