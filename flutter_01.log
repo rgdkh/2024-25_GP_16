@@ -1,0 +1,121 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run
+
+## exception
+
+StateError: Bad state: No element
+
+```
+#0      Stream.first.<anonymous closure> (dart:async/stream.dart:1583:9)
+#1      _rootRun (dart:async/zone.dart:1391:47)
+#2      _CustomZone.run (dart:async/zone.dart:1301:19)
+#3      _CustomZone.runGuarded (dart:async/zone.dart:1209:7)
+#4      _BufferingStreamSubscription._sendDone.sendDone (dart:async/stream_impl.dart:418:13)
+#5      _BufferingStreamSubscription._sendDone (dart:async/stream_impl.dart:428:7)
+#6      _BufferingStreamSubscription._close (dart:async/stream_impl.dart:317:7)
+#7      _SyncBroadcastStreamController._sendDone.<anonymous closure> (dart:async/broadcast_stream_controller.dart:399:22)
+#8      _BroadcastStreamController._forEachListener (dart:async/broadcast_stream_controller.dart:322:15)
+#9      _SyncBroadcastStreamController._sendDone (dart:async/broadcast_stream_controller.dart:398:7)
+#10     _BroadcastStreamController.close (dart:async/broadcast_stream_controller.dart:268:5)
+#11     _AsBroadcastStreamController.close (dart:async/broadcast_stream_controller.dart:505:24)
+#12     _rootRun (dart:async/zone.dart:1391:47)
+#13     _CustomZone.run (dart:async/zone.dart:1301:19)
+#14     _CustomZone.runGuarded (dart:async/zone.dart:1209:7)
+#15     _BufferingStreamSubscription._sendDone.sendDone (dart:async/stream_impl.dart:418:13)
+#16     _BufferingStreamSubscription._sendDone (dart:async/stream_impl.dart:428:7)
+#17     _BufferingStreamSubscription._close (dart:async/stream_impl.dart:317:7)
+#18     _SinkTransformerStreamSubscription._close (dart:async/stream_transformers.dart:87:11)
+#19     _EventSinkWrapper.close (dart:async/stream_transformers.dart:21:11)
+#20     _StringAdapterSink.close (dart:convert/string_conversion.dart:241:11)
+#21     _Utf8ConversionSink.close (dart:convert/string_conversion.dart:295:20)
+#22     _ErrorHandlingAsciiDecoderSink.close (dart:convert/ascii.dart:261:15)
+#23     _ConverterStreamEventSink.close (dart:convert/chunked_conversion.dart:78:18)
+#24     _SinkTransformerStreamSubscription._handleDone (dart:async/stream_transformers.dart:132:24)
+#25     _rootRun (dart:async/zone.dart:1391:47)
+#26     _CustomZone.run (dart:async/zone.dart:1301:19)
+#27     _CustomZone.runGuarded (dart:async/zone.dart:1209:7)
+#28     _BufferingStreamSubscription._sendDone.sendDone (dart:async/stream_impl.dart:418:13)
+#29     _BufferingStreamSubscription._sendDone (dart:async/stream_impl.dart:428:7)
+#30     _BufferingStreamSubscription._close (dart:async/stream_impl.dart:317:7)
+#31     _SyncStreamControllerDispatch._sendDone (dart:async/stream_controller.dart:792:19)
+#32     _StreamController._closeUnchecked (dart:async/stream_controller.dart:647:7)
+#33     _StreamController.close (dart:async/stream_controller.dart:640:5)
+#34     _Socket._onData (dart:io-patch/socket_patch.dart:2462:21)
+#35     _rootRunUnary (dart:async/zone.dart:1415:13)
+#36     _CustomZone.runUnary (dart:async/zone.dart:1308:19)
+#37     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1217:7)
+#38     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:365:11)
+#39     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:297:7)
+#40     _SyncStreamControllerDispatch._sendData (dart:async/stream_controller.dart:784:19)
+#41     _StreamController._add (dart:async/stream_controller.dart:658:7)
+#42     _StreamController.add (dart:async/stream_controller.dart:606:5)
+#43     new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:1949:35)
+#44     _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:1378:18)
+#45     _microtaskLoop (dart:async/schedule_microtask.dart:40:21)
+#46     _startMicrotaskLoop (dart:async/schedule_microtask.dart:49:5)
+#47     _runPendingImmediateCallback (dart:isolate-patch/isolate_patch.dart:118:13)
+#48     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:185:5)
+```
+
+## flutter doctor
+
+```
+[32m[✓][39m Flutter (Channel stable, 3.24.3, on Microsoft Windows [Version 10.0.22631.4317], locale en-US)
+    [32m•[39m Flutter version 3.24.3 on channel stable at C:\c\flutter\flutter
+    [32m•[39m Upstream repository https://github.com/flutter/flutter.git
+    [32m•[39m Framework revision 2663184aa7 (6 weeks ago), 2024-09-11 16:27:48 -0500
+    [32m•[39m Engine revision 36335019a8
+    [32m•[39m Dart version 3.5.3
+    [32m•[39m DevTools version 2.37.3
+
+[32m[✓][39m Windows Version (Installed version of Windows is version 10 or higher)
+
+[32m[✓][39m Android toolchain - develop for Android devices (Android SDK version 35.0.0)
+    [32m•[39m Android SDK at C:\Users\Raghad\AppData\Local\Android\sdk
+    [32m•[39m Platform android-35, build-tools 35.0.0
+    [32m•[39m Java binary at: C:\Program Files\Android\Android Studio1\jbr\bin\java
+    [32m•[39m Java version OpenJDK Runtime Environment (build 17.0.9+0--11185874)
+    [32m•[39m All Android licenses accepted.
+
+[32m[✓][39m Chrome - develop for the web
+    [32m•[39m Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[31m[✗][39m Visual Studio - develop Windows apps
+    [31m✗[39m Visual Studio not installed; this is necessary to develop Windows apps.
+      Download at https://visualstudio.microsoft.com/downloads/.
+      Please install the "Desktop development with C++" workload, including all of its default components
+
+[32m[✓][39m Android Studio (version 2023.1)
+    [32m•[39m Android Studio at C:\Program Files\Android\Android Studio
+    [32m•[39m Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    [32m•[39m Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    [32m•[39m Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
+
+[32m[✓][39m Android Studio (version 2023.2)
+    [32m•[39m Android Studio at C:\Program Files\Android\Android Studio1
+    [32m•[39m Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    [32m•[39m Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    [32m•[39m Java version OpenJDK Runtime Environment (build 17.0.9+0--11185874)
+
+[32m[✓][39m VS Code (version 1.94.2)
+    [32m•[39m VS Code at C:\Users\Raghad\AppData\Local\Programs\Microsoft VS Code
+    [32m•[39m Flutter extension version 3.98.0
+
+[32m[✓][39m Connected device (3 available)
+    [32m•[39m Windows (desktop) • windows • windows-x64    • Microsoft Windows [Version 10.0.22631.4317]
+    [32m•[39m Chrome (web)      • chrome  • web-javascript • Google Chrome 130.0.6723.70
+    [32m•[39m Edge (web)        • edge    • web-javascript • Microsoft Edge 130.0.2849.46
+
+[32m[✓][39m Network resources
+    [32m•[39m All expected network resources are available.
+
+[33m![39m Doctor found issues in 1 category.
+```

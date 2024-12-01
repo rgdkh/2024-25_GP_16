@@ -1,0 +1,54 @@
+name: awj
+description: "A new Flutter project."
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_maps_flutter: ^2.2.5
+  google_maps_flutter_web: ^0.3.0
+  firebase_auth: ^5.3.1
+  firebase_core: ^3.6.0
+  cloud_firestore: ^5.4.4
+  url_launcher: ^6.3.1
+  webview_flutter: ^4.10.0
+  webview_flutter_android: ^4.0.0
+  http: ^1.2.2
+  cupertino_icons: ^1.0.8
+  flutter_rating_bar: ^4.0.1
+  email_validator: ^3.0.0
+  google_sign_in: ^6.0.3
+  flutter_signin_button: ^2.0.0
+  firebase_storage: ^12.3.6
+  image_picker: ^1.1.2
+  shimmer: ^3.0.0
+  dcdg: ^4.1.0
+  
+
+
+
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/logo.png"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.9.2
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/trailsimage/
+    - assets/images/logo.png
+    - assets/images/logow.png
