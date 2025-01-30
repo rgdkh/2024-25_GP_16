@@ -1,26 +1,25 @@
-import 'package:dana2/src/features/authentication/login/login.dart';
+import 'authentication/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../constants/images.dart';
 
 class AfterForgot extends StatefulWidget {
   final String email;
 
-  AfterForgot({Key? key, required this.email}) : super(key: key);
+  const AfterForgot({super.key, required this.email});
 
   @override
   _AfterForgotState createState() => _AfterForgotState();
 }
 
 class _AfterForgotState extends State<AfterForgot> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>(); // Still keeping this in case you need it for other reasons
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  
   void resendPasswordResetEmail() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: widget.email);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Password reset email resent successfully!"),
           backgroundColor: Colors.green,
         ),
@@ -35,32 +34,35 @@ class _AfterForgotState extends State<AfterForgot> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEAE7D8), // Cream background
-      body: Center( // This centers the Column within the Scaffold
+      backgroundColor: const Color(0xFFEAE7D8), 
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center, // Ensure everything is centered horizontally
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-             Image(
-              image: const AssetImage(LogoImage),
-              width: 100,
-              height: 100,
+            Container(
+              margin: const EdgeInsets.only(bottom: 40),
+              child: Image.asset(
+                'assets/images/logo.png', 
+                width: 70,
+                height: 70,
+                fit: BoxFit.contain,
+              ),
             ),
-            Text(
+            const Text(
               'Password Reset Email Sent',
               style: TextStyle(
-                color: Color(0xFF2A3A26), // Green color for text
+                color: Color(0xFF2A3A26),
                 fontWeight: FontWeight.bold,
                 fontSize: 22.0,
               ),
               textAlign: TextAlign.center,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 "We've sent you a secure link to safely change your password and keep your account protected.",
                 style: TextStyle(
@@ -70,40 +72,38 @@ class _AfterForgotState extends State<AfterForgot> {
                 textAlign: TextAlign.center,
               ),
             ),
-         TextButton(
-            onPressed:resendPasswordResetEmail, // Implement resend email functionality
-            child: Text('Resend Email'),
-            style: TextButton.styleFrom(
-              foregroundColor: Color(0xFF2A3A26), // Green color text
+            TextButton(
+              onPressed: resendPasswordResetEmail,
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFF2A3A26), 
+              ),
+              child: const Text('Resend Email'),
             ),
-          ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SizedBox(
-            width: 250,
-              height: 40,// Increase button height
+              width: 250,
+              height: 40, 
               child: ElevatedButton(
-             onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-      },
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF2A3A26), // Green background color for button
-                  foregroundColor: Color(0xFFEAE7D8), // Cream text color for button
+                  backgroundColor: const Color(0xFF2A3A26), 
+                  foregroundColor: const Color(0xFFEAE7D8), 
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Rectangular shape with slight rounding
+                    borderRadius: BorderRadius.circular(8), 
                   ),
                 ),
-               
-                child: Text('Done', style: TextStyle(fontSize: 18)), // Increase text size
+                child: const Text('Done', style: TextStyle(fontSize: 18)), 
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
           ],
         ),
       ),
     );
   }
 }
-
