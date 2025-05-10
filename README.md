@@ -2,7 +2,7 @@
 
 ## Introduction
 AWJ is a mobile application designed to enhance the hiking experience in the region. It provides users with access to detailed hiking trail information, group trips, and equipment resources, with features tailored for both guest and registered users. The goal of the app is to create a community-driven platform where hikers can explore trails, join group trips, and contribute reviews or suggestions.
-
+ e
 ## Technology
 - **Programming Language**: Dart (Flutter)
 - **Database**: Firebase

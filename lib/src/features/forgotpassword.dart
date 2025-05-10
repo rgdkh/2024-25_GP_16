@@ -1,21 +1,22 @@
-import 'package:dana2/src/features/afterForgot.dart';
+import 'afterForgot.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../constants/images.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
 
+  ForgotPasswordScreen({super.key});
+
   void resetPassword(BuildContext context, String email) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      // Directly navigate to AfterForgot screen upon success
-    Navigator.of(context).push(
-  MaterialPageRoute(
-    builder: (context) => AfterForgot(email: emailController.text),
-  ),
-);
-
+      
+      
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AfterForgot(email: emailController.text),
+        ),
+      );
     } catch (e) {
       // Error handling
       ScaffoldMessenger.of(context).showSnackBar(
@@ -31,34 +32,42 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forgot Password', style: TextStyle(color: Color(0xFF2A3A26))),
+        title: const Text(
+          'Forgot Password',  style: TextStyle(
+              color:Color(0xFF2A3A26), fontWeight: FontWeight.bold, fontSize: 22),
+        ),
         centerTitle: true,
-        backgroundColor: Color(0xFFEAE7D8),
+        backgroundColor: const Color(0xFFEAE7D8),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              image: const AssetImage(LogoImage),
-              width: 100,
-              height: 100,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(bottom: 40),
+              child: Image.asset(
+                'assets/images/logo.png', 
+                width: 70,
+                height: 70,
+                fit: BoxFit.contain, 
+              ),
             ),
-            SizedBox(height: 40),
-            Text(
+            const SizedBox(height: 40),
+            const Text(
               'Enter your Email',
               style: TextStyle(fontSize: 24, color: Color(0xFF2A3A26)),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
                 labelStyle: TextStyle(color: Color(0xFF2A3A26)),
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF2A3A26)),
-                ), enabledBorder:UnderlineInputBorder(
+                ),
+                enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF2A3A26)),
                 ),
                 focusedBorder: UnderlineInputBorder(
@@ -66,29 +75,26 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 40),
-              SizedBox(
-            width: 250,
-              height: 40,// Increase button height
+            const SizedBox(height: 40),
+            SizedBox(
+              width: 250,
+              height: 40, 
               child: ElevatedButton(
-              onPressed: () => resetPassword(context, emailController.text),
+                onPressed: () => resetPassword(context, emailController.text),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF2A3A26), // Green background color for button
-                  foregroundColor: Color(0xFFEAE7D8), // Cream text color for button
+                  backgroundColor: const Color(0xFF2A3A26), 
+                  foregroundColor: const Color(0xFFEAE7D8), 
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Rectangular shape with slight rounding
+                    borderRadius: BorderRadius.circular(8), 
                   ),
                 ),
-               
-                child: Text('Next', style: TextStyle(fontSize: 18)), // Increase text size
+                child: const Text('Next', style: TextStyle(fontSize: 18)), 
               ),
             ),
           ],
         ),
       ),
-      backgroundColor: Color(0xFFEAE7D8),
+      backgroundColor: const Color(0xFFEAE7D8),
     );
   }
 }
-
-
