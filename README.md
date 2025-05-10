@@ -18,3 +18,6 @@ AWJ is a mobile application designed to enhance the hiking experience in the reg
  ```bash
 flutter run
 
+# AWJ (أوج) - Hiking Website
+You can access the website via the link or from the files here
+
