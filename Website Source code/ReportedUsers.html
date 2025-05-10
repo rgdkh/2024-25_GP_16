@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Reports</title>
+  <link rel="stylesheet" href="stylehomepage.css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #f1efe4; }
+    header { background-color: #273c2c; color: white; display: flex; align-items: center; padding: 10px 20px; }
+    .logo { height: 50px; margin-right: 15px; }
+    header h1 { font-size: 1.5em; margin: 0; }
+    nav { background-color: #273c2c; display: flex; justify-content: center; padding: 10px 0; }
+    nav a { color: white; text-decoration: none; padding: 10px 20px; margin: 0 10px; border-radius: 4px; transition: background 0.3s; font-weight: bold; }
+    nav a:hover { background-color: #3a5239; }
+    .admin-section { padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #273c2c; color: white; }
+    #paginationControls { margin-top: 10px; text-align: center; }
+    .pagination-btn { margin: 0 5px; padding: 5px 10px; cursor: pointer; border: none; background-color: #eee; border-radius: 4px; }
+    .pagination-btn.active { background-color: #007bff; color: white; }
+    button { padding: 5px 10px; background-color: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #e74c3c; }
+    .no-users-message { text-align: center; margin-top: 20px; font-size: 18px; color: #555; }
+    footer {
+  background-color: #273c2c;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: auto; 
+}
+  html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f1efe4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+nav a.active {
+  background-color: #f1efe4;
+  color: #273c2c;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.user-section {
+  padding: 30px;
+  margin: 60px auto 20px auto;
+  max-width: 600px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}  
+.admin-section { padding: 20px; }
+
+    h3 { margin-bottom: 20px; }
+    .setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    .setting-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.setting-item label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.setting-item input[type="number"] {
+  width: 70px;
+  padding: 5px 5px;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.red-icon {
+      color: red;
+      font-size: 20px;
+      margin-left: 10px;
+    }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+
+.dropbtn {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  margin: 0 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  position: relative;
+}
+
+.dropbtn::after {
+  content: '▾';
+  margin-left: 6px;
+  font-size: 0.8em;
+  transition: transform 0.2s ease;
+}
+.dropdown:hover .dropbtn::after {
+  transform: rotate(180deg);
+}
+
+
+.dropdown-content {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  opacity: 0;
+  display: block;           
+  pointer-events: none;
+  background: #FFF;        
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  min-width: 180px;
+  z-index: 100;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 16px;
+  color: #273c2c;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+.dropdown-content a:not(:last-child) {
+  border-bottom: 1px solid #EEE;
+}
+.dropdown-content a:hover {
+  background-color: #F0F0F0;
+}
+
+nav .dropdown .dropbtn {
+  position: relative;
+  top: 9px;   
+  vertical-align: middle;
+}
+
+section.admin-section:first-of-type h3 {
+  display: inline-block;
+  position: relative;
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+}
+
+
+section.admin-section:first-of-type h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;           
+  height: 3px;           
+  background-color: #fca02d;
+}
+
+
+.setting-item label {
+  position: relative;
+  padding-left: 18px;  
+}
+.setting-item label::before {
+  content: '●';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #fca02d;
+  font-size: 1em;      
+  line-height: 1.4;       
+}
+
+
+.setting-item {
+  margin-bottom: 8px;
+}
+.setting-note {
+  margin: 0 0 12px;
+  text-align: left;
+}
+.setting-note small {
+  display: block;
+  color: gray;
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+/* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 768px) {
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+  nav a,
+  .dropbtn,
+  #signOutBtn {
+    width: 100%;
+    margin: 5px 0;
+    text-align: center;
+  }
+
+  table {
+    font-size: 14px;
+  }
+  th, td {
+    padding: 8px;
+  }
+
+  .filter-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .pagination-btn {
+    margin: 3px;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Header stacks */
+  header {
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+  }
+  .logo {
+    margin: 10px 0;
+    height: 40px;
+  }
+  header h1 {
+    font-size: 1.2em;
+  }
+
+  .admin-section h3 {
+    font-size: 1.2em;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  thead {
+    display: none;
+  }
+  tr {
+    margin-bottom: 10px;
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+    border-top: 1px solid #eee;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  tr td:first-child {
+    border-top: none;
+  }
+
+  td::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    padding: 8px;
+    background-color: #273c2c;
+    color: #fff;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: left;
+  }
+  td:nth-of-type(1)::before { content: "User Email"; }
+  td:nth-of-type(2)::before { content: "Name"; }
+  td:nth-of-type(3)::before { content: "Total Reports"; }
+  td:nth-of-type(4)::before { content: "Status"; }
+  td:nth-of-type(5)::before { content: "Actions"; }
+
+  td > * {
+    margin-left: 48%;
+  }
+
+  #paginationControls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="AWJLogo.PNG" alt="Logo" class="logo" />
+    <h1>ADMIN DASHBOARD</h1>
+  </header>
+
+  <nav>
+    <a href="homepage.html">Home</a>
+    <a href="trails.html">Trails</a>
+    <a href="HikingCommunity.html">Hikers Community</a>
+    <a href="Allreviews.html">Reviews</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Reports</a>
+      <div class="dropdown-content">
+        <a href="ReportedTrails.html">Trails</a>
+        <a href="ReportedUsers.html" class="active">Users</a>
+        <a href="ReportedReviews.html">Reviews</a>
+        <a href="reportedgrouptrips.html">Trips</a>
+        <a href="ReportedHikingCom.html">Hiking Community</a>
+      </div>
+    </div>
+    
+    </div>
+    <a href="#" id="signOutBtn">Sign Out</a>
+  </nav>
+
+  <section class="admin-section">
+    <h3>Reports Settings</h3>
+
+    <div class="setting-item">
+      <label for="reportThreshold">Report Threshold</label>
+      <input type="number" id="reportThreshold" value="3" style="width: 60px;" />
+    </div>
+    <div class="setting-note">
+      <small>
+        Note: When Auto-Block is on, any user who reaches this report count will be blocked automatically.
+      </small>
+    </div>
+
+
+    <div class="setting-item">
+      <label for="autoBlockSwitch">Auto-Block Users</label>
+      <label class="switch">
+        <input type="checkbox" id="autoBlockSwitch">
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+  </section>
+
+  <section class="admin-section">
+    <h3>Reported Users</h3>
+    <table id="userReportsTable">
+      <thead>
+        <tr>
+          <th>User Email</th>
+          <th>Name</th>
+          <th >Total Reports
+            <input
+            type="number" id="userReportThreshold" value="1" min="1" style="width: 60px;" 
+          />
+          </th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userReportsBody"></tbody>
+    </table>
+    <div id="paginationControls"></div>
+    <div id="noUsersMessage" class="no-users-message" style="display:none;">No reported users found.</div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, collectionGroup, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZl1Iu5iS0DlyTRA3mf3yKBosLzYuaODQ",
+      authDomain: "awj-app-e5077.firebaseapp.com",
+      projectId: "awj-app-e5077",
+      storageBucket: "awj-app-e5077.appspot.com",
+      messagingSenderId: "607424767081",
+      appId: "1:607424767081:web:68be77963f1c79fcfc6ef8",
+      measurementId: "G-SX282DCMQC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const autoBlockSwitch = document.getElementById('autoBlockSwitch');
+    const userThreshInput = document.getElementById('userReportThreshold');
+
+async function loadSettings() {
+  const settingsRef = doc(db, "settings", "autoBlock");
+  const settingsSnap = await getDoc(settingsRef);
+    let allUsers = [];
+    let currentPage = 1;
+    const rowsPerPage = 5;
+    let autoBlockEnabled = false;
+
+    if (settingsSnap.exists()) {
+    const data = settingsSnap.data();
+    autoBlockSwitch.checked = data.enabled === true;
+    document.getElementById('reportThreshold').value = data.threshold ?? 3; // default if missing
+window.loadUserReports = loadUserReports;
+
+  }
+
+    async function loadUserReports() {
+      const autoBlockRef = doc(db, "settings", "autoBlock");
+      const autoBlockSnap = await getDoc(autoBlockRef);
+      if (autoBlockSnap.exists()) {
+        autoBlockEnabled = autoBlockSnap.data().enabled === true;
+      }
+
+      const usersSnap = await getDocs(collection(db, "users"));
+      const trailsSnap = await getDocs(collection(db, "trails"));
+      const reviewsSnap = await getDocs(collectionGroup(db, "reviews"));
+
+      const trailReports = {};
+      trailsSnap.forEach(doc => {
+        const data = doc.data();
+        if (data.createdBy) {
+          trailReports[data.createdBy] = (trailReports[data.createdBy] || 0) + (data.reportCount || 0);
+        }
+      });
+
+      const reviewReports = {};
+      reviewsSnap.forEach(doc => {
+        const data = doc.data();
+        if (data.userId) {
+          reviewReports[data.userId] = (reviewReports[data.userId] || 0) + (data.reportCount || 0);
+        }
+      });
+
+      allUsers = [];
+
+      for (const userDoc of usersSnap.docs) {
+        const userId = userDoc.id;
+        const userData = userDoc.data();
+        const totalReports = (trailReports[userId] || 0) + (reviewReports[userId] || 0);
+
+        if (totalReports >= 1) {
+          const user = {
+            userId,
+            email: userData.email || userId,
+            name: userData.name || "Unknown",
+            isBlocked: userData.isBlocked || false,
+            totalReports
+          };
+
+          const settingsRef = doc(db, "settings", "autoBlock");
+const settingsSnap = await getDoc(settingsRef);
+const autoBlockData = settingsSnap.data();
+const autoBlockEnabled = autoBlockData.enabled;
+const reportThreshold = autoBlockData.threshold || 11;
+
+if (autoBlockEnabled && totalReports >= reportThreshold && !user.isBlocked) {
+  await updateDoc(doc(db, "users", userId), { isBlocked: true });
+  user.isBlocked = true;
+}
+
+
+          allUsers.push(user);
+        }
+      }
+
+allUsers = allUsers.filter((user, i, arr) =>
+  arr.findIndex(u => u.userId === user.userId) === i
+);
+
+allUsers.sort((a, b) => b.totalReports - a.totalReports);
+currentPage = 1;
+displayUsers(currentPage);
+setupPagination();
+
+    }
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (user) loadUserReports();
+      else {
+        alert("You must be signed in to access this page.");
+        window.location.href = "login.html";
+      }
+    });
+    document.getElementById("signOutBtn").addEventListener("click", async e => {
+  e.preventDefault();
+  if (!confirm("Are you sure you want to sign out?")) return;
+
+  unsubscribeAuth();
+  try {
+    await signOut(auth);
+    window.location.href = "login.html";
+  } catch (error) {
+    console.error("Error signing out:", error);
+    alert("Failed to sign out. Please try again.");
+  }
+});
+
+
+
+    function displayUsers(page) {
+      const threshold = parseInt(userThreshInput.value, 10) || 1;
+  const filtered  = allUsers.filter(u => u.totalReports >= threshold);
+  const start     = (page - 1) * rowsPerPage;
+  const pageData  = filtered.slice(start, start + rowsPerPage);
+  const end = start + rowsPerPage;
+  const tbody = document.getElementById("userReportsBody");
+  tbody.innerHTML = "";
+
+  if (pageData.length === 0) {
+    document.getElementById("noUsersMessage").style.display = "block";
+  } else {
+    document.getElementById("noUsersMessage").style.display = "none";
+  }
+
+  pageData.forEach(user => {
+    const tr = document.createElement("tr");
+
+    const reportThreshold = document.getElementById('reportThreshold').value || 3; // Get the threshold from the input
+    const userThreshInput = document.getElementById('userReportThreshold');
+
+    const redIcon = user.totalReports >= reportThreshold ? '<i class="fas fa-exclamation-circle red-icon"></i>' : '';
+
+    tr.innerHTML = `
+      <td>${user.email}</td>
+      <td>${user.name}</td>
+      <td>${user.totalReports} ${redIcon}</td>
+      <td>${user.isBlocked ? "Blocked" : "Active"}</td>
+      <td>
+        ${user.isBlocked
+          ? `<button onclick="unblockUser('${user.userId}')">Unblock</button>`
+          : `<button onclick="blockUser('${user.userId}')">Block</button>`}
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+userThreshInput.addEventListener('input', () => {
+  currentPage = 1;
+  displayUsers(currentPage);
+  setupPagination();
+});
+
+    function setupPagination() {
+      const threshold = parseInt(userThreshInput.value, 10) || 1;
+  const filtered  = allUsers.filter(u => u.totalReports >= threshold);
+  const totalPages = Math.ceil(filtered.length / rowsPerPage);
+      const pagination = document.getElementById("paginationControls");
+      pagination.innerHTML = "";
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.classList.add("pagination-btn");
+        if (i === currentPage) btn.classList.add("active");
+        btn.addEventListener("click", () => {
+          currentPage = i;
+          displayUsers(currentPage);
+          setupPagination();
+        });
+        pagination.appendChild(btn);
+      }
+    }
+
+    async function blockUser(userId) {
+      try {
+        await updateDoc(doc(db, "users", userId), { isBlocked: true });
+        alert("User has been blocked.");
+        loadUserReports();
+      } catch (err) {
+        console.error("Failed to block user:", err);
+      }
+    }
+    window.blockUser = blockUser;
+
+    async function unblockUser(userId) {
+      try {
+        await updateDoc(doc(db, "users", userId), { isBlocked: false });
+        alert("User has been unblocked.");
+        loadUserReports();
+      } catch (err) {
+        console.error("Failed to unblock user:", err);
+      }
+    }
+    
+
+  if (settingsSnap.exists()) {
+    const data = settingsSnap.data();
+    autoBlockSwitch.checked = data.enabled === true;
+  } else {
+    await setDoc(settingsRef, { enabled: false });
+    autoBlockSwitch.checked = false;
+  }
+}/////////////
+
+async function updateAutoBlockSetting(enabled) {
+  const settingsRef = doc(db, "settings", "autoBlock");
+  await setDoc(settingsRef, { enabled });
+}
+
+autoBlockSwitch.addEventListener('change', () => {
+  updateAutoBlockSetting(autoBlockSwitch.checked);
+});
+
+
+document
+  .getElementById('reportThreshold')
+  .addEventListener('change', async () => {
+    const newThreshold = parseInt(
+      document.getElementById('reportThreshold').value,
+      10
+    );
+    const settingsRef = doc(db, "settings", "autoBlock");
+    await updateDoc(settingsRef, { threshold: newThreshold });
+    window.loadUserReports();
+  });
+
+
+autoBlockSwitch.addEventListener('change', async () => {
+  const newValue = autoBlockSwitch.checked;
+  const settingsRef = doc(db, "settings", "autoBlock");
+  await updateDoc(settingsRef, {
+    enabled: newValue
+  });
+});
+
+window.blockUser = async (userId) => {
+      try {
+        await updateDoc(doc(db, "users", userId), { isBlocked: true });
+        alert("User has been blocked.");
+        loadUserReports();
+      } catch (err) {
+        console.error("Failed to block user:", err);
+      }
+    };
+
+    window.unblockUser = async (userId) => {
+      try {
+        await updateDoc(doc(db, "users", userId), { isBlocked: false });
+        alert("User has been unblocked.");
+        window.loadUserReports();
+      } catch (err) {
+        console.error("Failed to unblock user:", err);
+      }
+    };
+
+    userThreshInput.addEventListener('input', () => {
+  currentPage = 1;
+  displayUsers(currentPage);
+  setupPagination();
+});
+
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "firstpage.html";
+  } else {
+    loadSettings();
+    loadUserReports();
+  }
+});
+    window.unblockUser = unblockUser;
+  </script>
+  <footer>
+    &copy; 2025 AWJ Hiking App | All Rights Reserved
+  </footer>  
+</body>
+</html>

@@ -1,0 +1,227 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Background */
+body {
+    background-color: #ECE9DD;
+    color: #333;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: center; /* Center the title */
+    align-items: center;
+    background-color: #2A3A26;
+    padding: 20px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+.admin-content {
+    text-align: center;
+    padding: 40px;
+}
+
+.admin-content h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #374923;
+}
+
+.admin-content p {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Admin Sections */
+.admin-section {
+    background: rgba(255, 255, 255, 0.8);
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    align-items: center;
+}
+
+.admin-section h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #2A3A26;
+}
+
+/* Buttons */
+button {
+    background: #F7A22C;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #d68b1e;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #2A3A26;
+    color: white;
+    font-weight: 600;
+}
+
+td {
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+/* Action Buttons */
+.edit-btn, .delete-btn, .approve-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 5px;
+    border: none;
+}
+
+.edit-btn {
+    background: #3498db;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #2980b9;
+}
+
+.delete-btn {
+    background: red;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: darkred;
+}
+
+.approve-btn {
+    background: green;
+    color: white;
+}
+
+.approve-btn:hover {
+    background: darkgreen;
+}
+
+/* Pagination Styles */
+#paginationControls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination-btn {
+    margin: 0 5px;
+    padding: 8px 14px;
+    cursor: pointer;
+    border: none;
+    background-color: #F7A22C; /* Orange */
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
+
+.pagination-btn:hover {
+    background-color: #d68b1e; /* Darker orange */
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-content {
+        padding: 20px;
+    }
+
+    .admin-section {
+        width: 95%;
+        padding: 15px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #2A3A26;
+        padding: 20px;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Logo */
+.logo {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: 90px !important;
+    width: 80px !important;
+    position: relative !important;
+    z-index: 999 !important;
+    margin-right: 15px;
+}
+
+/* Admin Header Flexbox */
+.admin-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.admin-header h3 {
+    text-align: center;
+    flex-grow: 1;
+}

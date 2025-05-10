@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Page</title>
+
+  <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Nunito', sans-serif;
+    }
+    html, body { height: 100%; }
+
+
+    .background {
+      display: flex; justify-content: center; align-items: center;
+      height: 100%;
+      background:
+        url('img50.png') left bottom no-repeat,
+        radial-gradient(circle at top left, #f1efe4 0%, #e0dccd 100%);
+    }
+
+
+    .login-container {
+      width: 360px; padding: 2rem 1.5rem;
+      background: #283423;         
+      border: 4px solid #e6b059;    
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+
+    .logo-img {
+      display: block;
+      margin: 0 auto 1rem;
+      width: 100px;   
+      height: auto;
+    }
+    .login-container h2 {
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-box {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .input-box input {
+      width: 100%; padding: .75rem 1rem;
+      border: 2px solid #fff; border-radius: .5rem;
+      background: #fff; color: #283423; font-size: 1rem;
+      outline: none; transition: border-color .2s;
+    }
+    .input-box input::placeholder {
+      color: #999;
+    }
+    .input-box input:focus {
+      border-color: #e6b059;
+    }
+
+
+    .icon-left {
+      position: absolute; left: 1rem; top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      pointer-events: none;
+    }
+
+
+    .icon-right {
+      position: absolute; right: 1rem; top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      cursor: pointer;
+    }
+
+
+    .error-message {
+      text-align: left; padding-left: .25rem;
+      min-height: 1.2em; margin-bottom: .75rem;
+      color: #ff6b6b; font-size: .9rem;
+    }
+
+
+    .forgot-btn {
+      background: none; border: none;
+      color: #f8f2e8; font-size: .9rem;
+      margin-bottom: 1rem; cursor: pointer;
+    }
+    .forgot-btn:hover {
+      text-decoration: underline;
+    }
+
+
+    .login-btn {
+      width: 100%; padding: .75rem;
+      background: #e6b059; color: #283423;
+      font-weight: 700; font-size: 1rem;
+      border: none; border-radius: .5rem;
+      cursor: pointer; transition: background .2s;
+    }
+    .login-btn:hover {
+      background: #d9a84f;
+    }
+
+
+    @media (max-width: 380px) {
+      .login-container {
+        width: 90%;
+      }
+    }
+  </style>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, where }
+      from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail }
+      from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZl1Iu5iS0DlyTRA3mf3yKBosLzYuaODQ",
+      authDomain: "awj-app-e5077.firebaseapp.com",
+      projectId: "awj-app-e5077",
+      storageBucket: "awj-app-e5077.appspot.com",
+      messagingSenderId: "607424767081",
+      appId: "1:607424767081:web:68be77963f1c79fcfc6ef8",
+      measurementId: "G-SX282DCMQC"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Login
+    async function login() {
+      const email = document.getElementById("email").value.trim();
+      const pass  = document.getElementById("password").value;
+      const error = document.getElementById("error-message");
+      error.textContent = "";
+
+      if (!email || !pass) {
+        alert("Please enter both email and password.");
+        return;
+      }
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        const snap = await getDocs(
+          query(collection(db, "Admin"), where("Email","==",email))
+        );
+        if (!snap.empty) {
+          window.location.href = "homepage.html";
+        } else {
+          await auth.signOut();
+          error.textContent = "You are not an admin.";
+        }
+      } catch (e) {
+        error.textContent = 
+          e.code==="auth/wrong-password"||e.code==="auth/user-not-found"
+            ? "Invalid email or password."
+            : "Login failed. Please try again.";
+      }
+    }
+
+    // Reset
+    async function resetPassword() {
+      const email = document.getElementById("email").value.trim();
+      const error = document.getElementById("error-message");
+      error.textContent = "";
+
+      if (!email) {
+        error.textContent = "Enter your email to reset password.";
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        error.textContent = "Reset email sent. Check your inbox.";
+      } catch (err) {
+        error.textContent = "Error: " + err.message;
+      }
+    }
+
+
+    function togglePassword() {
+      const pwdField = document.getElementById("password");
+      const eyeIcon  = document.querySelector(".toggle-password");
+      const isPwd    = pwdField.type === "password";
+      pwdField.type  = isPwd ? "text" : "password";
+      eyeIcon.classList.toggle("fa-eye-slash", isPwd);
+      eyeIcon.classList.toggle("fa-eye", !isPwd);
+    }
+
+    window.onload = () => {
+      document.querySelector(".login-btn").onclick  = login;
+      document.querySelector(".forgot-btn").onclick = resetPassword;
+      document.querySelector(".toggle-password").onclick = togglePassword;
+    };
+  </script>
+</head>
+<body>
+  <div class="background">
+    <div class="login-container">
+
+
+      <img src="AWJLogo.PNG" alt="AWJ Logo" class="logo-img">
+
+
+      <h2>Login</h2>
+
+
+      <div class="input-box">
+        <i class="fas fa-envelope icon-left"></i>
+        <input type="email" id="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-box">
+        <i class="fas fa-lock icon-left"></i>
+        <input type="password" id="password" placeholder="Password" required>
+        <i class="fas fa-eye toggle-password icon-right"></i>
+      </div>
+
+
+      <div class="error-message" id="error-message"></div>
+
+
+      <button type="button" class="forgot-btn">Forgot Password?</button>
+      <button class="login-btn">Login</button>
+    </div>
+  </div>
+</body>
+</html>

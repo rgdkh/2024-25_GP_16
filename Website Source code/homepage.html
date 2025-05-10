@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="stylehomepage.css"/>
+  <style>
+      footer {
+  background-color: #273c2c;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: auto; 
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f1efe4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+     header {
+      background-color: #273c2c;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .logo {
+      height: 50px;
+      margin-right: 15px;
+    }
+    header h1 {
+      font-size: 1.5em;
+      margin: 0;
+    }
+    body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1efe4; }
+    header { background-color: #273c2c; color: white; display: flex; align-items: center; padding: 10px 20px; }
+    .logo { height: 50px; margin-right: 15px; }
+    header h1 { font-size: 1.5em; margin: 0; }
+    nav { background-color: #273c2c; display: flex; justify-content: center; padding: 10px 0; }
+    nav a { color: white; text-decoration: none; padding: 10px 20px; margin: 0 10px; border-radius: 4px; transition: background 0.3s; font-weight: bold; }
+    nav a:hover { background-color: #3a5239; }
+    .welcome-container { text-align: center; margin-top: 50px; }
+    .welcome-container h2 { color: #273c2c; font-size: 2em; }
+    .welcome-container p { color: #666; font-size: 1.1em; }
+    #notification {
+  text-align: center;
+  margin-top: 80px;
+}
+
+#notificationPopup {
+  text-align: center;
+  margin-top: 80px;
+  display: none;
+  position: fixed;
+  bottom: 350px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px #999;
+  max-height: 400px;
+  overflow-y: auto;
+  width: 350px;
+  z-index: 999;
+}
+
+#notifDetails {
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notif-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.notif-box:hover {
+  background-color: #f1f1f1;
+}
+
+    button { background-color: #273c2c; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #3a5239; }
+    footer {
+  background-color: #273c2c;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: auto; 
+}
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px auto;
+  flex-wrap: wrap;
+  max-width: 1000px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 2px solid #273c2c;
+  color: #273c2c;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#hikingTipsCount {
+  font-size: 2.5em; 
+  font-weight: bold;
+  color: #273c2c; 
+  margin-top: 20px;
+  text-align: center; 
+}
+#UserCount {
+  font-size: 2.5em; 
+  font-weight: bold;
+  color: #273c2c; 
+  margin-top: 20px;
+  text-align: center;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  margin: 0 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  position: relative;
+}
+.dropbtn::after {
+  content: '▾';
+  margin-left: 6px;
+  font-size: 0.8em;
+  transition: transform 0.2s ease;
+}
+.dropdown:hover .dropbtn::after {
+  transform: rotate(180deg);
+}
+
+.dropdown-content {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  opacity: 0;
+  display: block;          
+  pointer-events: none;
+  background: #FFF;        
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  min-width: 180px;
+  z-index: 100;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 16px;
+  color: #273c2c;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+.dropdown-content a:not(:last-child) {
+  border-bottom: 1px solid #EEE;
+}
+.dropdown-content a:hover {
+  background-color: #F0F0F0;
+}
+
+nav .dropdown .dropbtn {
+  position: relative;
+  top: 9px;   
+  vertical-align: middle;
+}
+/* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 768px) {
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+  nav a,
+  .dropbtn,
+  #sign-out-btn {
+    width: 100%;
+    margin: 5px 0;
+    text-align: center;
+  }
+
+  .dashboard-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 20px auto;
+  }
+  .card {
+    width: 90%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  header {
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+  }
+  .logo {
+    margin: 10px 0;
+    height: 40px;
+  }
+  header h1 {
+    font-size: 1.2em;
+  }
+
+  .welcome-container h2 {
+    font-size: 1.5em;
+    margin-top: 20px;
+  }
+  .welcome-container p {
+    font-size: 1em;
+  }
+
+  #notificationPopup {
+    width: 90%;
+    bottom: 200px;
+  }
+}
+
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = { apiKey: "AIzaSyBZl1Iu5iS0DlyTRA3mf3yKBosLzYuaODQ", authDomain: "awj-app-e5077.firebaseapp.com", projectId: "awj-app-e5077", storageBucket: "awj-app-e5077.appspot.com", messagingSenderId: "607424767081", appId: "1:607424767081:web:68be77963f1c79fcfc6ef8", measurementId: "G-SX282DCMQC" };
+    firebase.initializeApp(firebaseConfig);
+
+    let notificationItems = [];
+
+    
+
+    let notificationsLoaded = false;
+
+function setupRealtimeNotificationListener() {
+  const db = firebase.firestore();
+  notificationItems = [];
+
+  const updateUI = () => {
+    const count = notificationItems.length;
+    if (notificationsLoaded) {
+      document.getElementById("notifCount").textContent =
+        count > 0 ? `You have ${count} notifications` : "No notifications";
+    } else {
+      document.getElementById("notifCount").textContent = "Loading notifications...";
+    }
+  };
+
+  const addOrUpdateNotification = (doc, label) => {
+    const data = doc.data();
+    const exists = notificationItems.find(n => n.ref.id === doc.id);
+
+    if ((data.adminSeen === false || data.adminSeen == null) && !exists) {
+      notificationItems.push({ message: label, ref: doc.ref });
+    } else if ((data.adminSeen === true || data === undefined) && exists) {
+      notificationItems = notificationItems.filter(n => n.ref.id !== doc.id);
+    }
+
+    updateUI();
+  };
+
+  const listenToCollectionGroup = (collectionName, labelFn) => {
+    db.collectionGroup(collectionName).onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const doc = change.doc;
+        const path = doc.ref.path;
+
+        let label;
+        if (path.includes("trails/") && collectionName === "reviews") {
+          label = `Trail Review reported (Trail ID: ${doc.ref.parent.parent.id})`;
+        } else if (path.includes("GroupTrips/") && collectionName === "reviews") {
+          label = `Group Trip Review reported (Trip ID: ${doc.ref.parent.parent.id})`;
+        } else {
+          label = labelFn(doc);
+        }
+
+        addOrUpdateNotification(doc, label);
+      });
+      notificationsLoaded = true;
+      updateUI();
+    });
+  };
+
+  listenToCollectionGroup("reported_review_trip", doc => `Reported Review for Group Trip (Trip ID: ${doc.ref.parent.parent.id})`);
+  listenToCollectionGroup("reported_trails", doc => `Trail reported (ID: ${doc.ref.parent.parent.id})`);
+  listenToCollectionGroup("reports", doc => `Group Trip reported (ID: ${doc.ref.parent.parent.id})`);
+  listenToCollectionGroup("reported_tips", doc => `Hiking Tip reported (ID: ${doc.ref.parent.parent.id})`);
+  listenToCollectionGroup("reported_reviews", doc => `Reported Review (ID: ${doc.ref.parent.id})`);
+}
+
+async function openNotifications() {
+  const popup = document.getElementById("notificationPopup");
+  const list = document.getElementById("notifDetails");
+  list.innerHTML = "";
+
+  if (notificationItems.length === 0) {
+    list.innerHTML = "<div class='notif-box'>No notifications</div>";
+  } else {
+    notificationItems.forEach(async ({ message, ref }) => {
+      const div = document.createElement("div");
+      div.className = "notif-box";
+
+      let name = "Unknown";
+      try {
+        const docSnap = await ref.get();
+        const data = docSnap.data();
+        
+        if (data) {
+  const path = ref.path;
+  console.log("Notification Path:", path);  // Log the path for debugging
+  console.log("Raw Data Retrieved:", data); // Log the entire data object
+
+  try {
+    if (path.includes("trails/") && path.includes("reported_trails")) {
+      const parentRef = ref.parent.parent;
+      const parentSnap = await parentRef.get();
+      if (parentSnap.exists) {
+        const parentData = parentSnap.data();
+        name = parentData.Name || parentData.name || parentData.trailName || "Unknown Trail";
+      }
+      message = `Trail reported: ${name}`;
+      console.log("Trail Report:", name);
+
+    } else if (path.includes("GroupTrips/") && path.includes("reports")) {
+      const parentRef = ref.parent.parent;
+      const parentSnap = await parentRef.get();
+      if (parentSnap.exists) {
+        const parentData = parentSnap.data();
+        name = parentData.city || parentData.location || parentData.tripName || "Unknown Location";
+      }
+      message = `Group Trip reported: ${name}`;
+      console.log("Group Trip Report:", name);
+
+    } else if (path.includes("hikingTips/") && path.includes("reported_tips")) {
+    // Hiking Tip Report
+    const userRef = firebase.firestore().collection("users").doc(data.reportedBy);
+    const userSnap = await userRef.get();
+    if (userSnap.exists) {
+        name = userSnap.data().name || userSnap.data().userName || "Unknown User";
+    } else {
+        name = "Unknown User";
+    }
+    message = `Hiking Community Post reported by ${name}`;
+    console.log("Hiking Tip Report:", name);
+
+
+
+    } else if (path.includes("GroupTrips/") && path.includes("reported_review_trip")) {
+      // Group Trip Review Report
+      const userRef = firebase.firestore().collection("users").doc(data.reportedBy);
+      const userSnap = await userRef.get();
+      if (userSnap.exists) {
+        name = userSnap.data().name || userSnap.data().userName || "Unknown User";
+      } else {
+        name = "Unknown User";
+      }
+      message = `Group Trip Review reported by ${name}`;
+      console.log("Group Trip Review Report:", name);
+
+    } else if (path.includes("trails/") && path.includes("reported_reviews")) {
+      // Trail Review Report
+      const userRef = firebase.firestore().collection("users").doc(data.reportedBy);
+      const userSnap = await userRef.get();
+      if (userSnap.exists) {
+        name = userSnap.data().name || userSnap.data().userName || "Unknown User";
+      } else {
+        name = "Unknown User";
+      }
+      message = `Trail Review reported by ${name}`;
+      console.log("Trail Review Report:", name);
+
+    } else if (data.reportedBy) {
+      try {
+        const userRef = firebase.firestore().collection("users").doc(data.reportedBy);
+        const userSnap = await userRef.get();
+        if (userSnap.exists) {
+          name = userSnap.data().name || userSnap.data().userName || "Unknown Reporter";
+          message = `Review reported by ${name}`;
+          console.log("User Reported By:", name);
+        } else {
+          console.error("User not found for ID:", data.reportedBy);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    } else {
+      console.error("Unknown data structure:", data);
+    }
+  } catch (err) {
+    console.error("Error processing data:", err);
+  }
+} else {
+  console.error("No data found for this reference.");
+}
+
+
+
+      } catch (error) {
+        console.error("Error fetching name or city:", error);
+      }
+
+      const text = document.createElement("span");
+text.textContent = message;
+
+
+
+      const button = document.createElement("button");
+      button.textContent = "Go to Reports";
+      button.style.marginLeft = "10px";
+      button.onclick = async () => {
+        await ref.update({ adminSeen: true });
+        div.remove();
+        notificationItems = notificationItems.filter(n => n.ref.id !== ref.id);
+        document.getElementById("notifCount").textContent = 
+          notificationItems.length > 0 
+          ? `You have ${notificationItems.length} notifications` 
+          : "No notifications";
+
+        const path = ref.path;
+        let redirectUrl = "";
+
+        if (path.includes("trails/") && path.includes("reported_trails")) {
+          redirectUrl = "ReportedTrails.html";
+        } else if (path.includes("GroupTrips/") && path.includes("reports")) {
+          redirectUrl = "reportedgrouptrips.html";
+        } else if (path.includes("trails/") && path.includes("reported_reviews")) {
+          redirectUrl = "ReportedReviews.html";
+        } else if (path.includes("GroupTrips/") && path.includes("reviews")) {
+          redirectUrl = "ReportedReviews.html";
+        } else if (path.includes("hikingTips/") && path.includes("reported_tips")) {
+          redirectUrl = "ReportedHikingCom.html";
+        }
+
+        if (redirectUrl) {
+          window.location.href = `${redirectUrl}`;
+        }
+      };
+
+      div.appendChild(text);
+      div.appendChild(button);
+      list.appendChild(div);
+    });
+  }
+
+  popup.style.display = "block";
+}
+
+
+window.onload = setupRealtimeNotificationListener;
+
+ 
+   
+   
+    async function loadDashboardCounts() {
+  const db = firebase.firestore();
+
+  try {
+    const trailsSnapshot = await db.collection("trails").get();
+    const trailsCount = trailsSnapshot.size;
+
+    const suggestedTrailsCount = trailsSnapshot.docs.filter(doc => {
+  const data = doc.data();
+  return data.hasOwnProperty('AddedByName') && data.AddedByName !== '';
+}).length;
+
+trailsSnapshot.docs.forEach(doc => console.log(doc.data()));
+
+    const groupTripsSnapshot = await db.collection("GroupTrips").get();
+    const groupTripsCount = groupTripsSnapshot.size;
+
+    const hikingTipsSnapshot = await db.collection("hikingTips").get();
+    const hikingTipsCount = hikingTipsSnapshot.size;
+
+    const UserSnapshot = await db.collection("users").where("isBlocked", "==", false).get();
+const UserCount = UserSnapshot.size;
+
+
+    document.getElementById("trailsCount").textContent = `Trails: ${trailsCount}`;
+document.getElementById("groupTripsCount").textContent = `Group Trips: ${groupTripsCount}`;
+document.getElementById("hikingTipsCount").textContent = `${hikingTipsCount}`;
+document.getElementById("UserCount").textContent = `${UserCount}`;
+document.getElementById("suggestedTrailsCount").textContent = `Suggested Trails: ${suggestedTrailsCount}`;
+
+  } catch (error) {
+    console.error("Error loading dashboard counts:", error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadDashboardCounts();
+ 
+});
+async function renderTrailChart() {
+    const db = firebase.firestore();
+    let totalTrails = 0;
+    let suggestedTrails = 0;
+
+    try {
+      const trailsSnapshot = await db.collection("trails").get();
+      trailsSnapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.AddedBy) {
+          suggestedTrails++;
+        } else {
+          totalTrails++;
+        }
+      });
+
+      const ctx = document.getElementById('trailChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Awj Trails', 'Suggested Trails'],
+          datasets: [{
+            data: [totalTrails, suggestedTrails],
+            backgroundColor: ['#273c2c', '#fca02d'],
+            borderColor: ['#ffffff', '#ffffff'],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#273c2c',
+                font: {
+                  weight: 'bold'
+                }
+              }
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching trail chart data:", error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTrailChart();
+  });
+
+  
+  async function renderTripChart() {
+    const db = firebase.firestore();
+    let previousTrips = 0;
+    let upcomingTrips = 0;
+    const now = new Date();
+
+    try {
+      const snapshot = await db.collection("GroupTrips").get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const tripDate = data.timestamp?.toDate();
+        if (tripDate) {
+          if (tripDate < now) {
+            previousTrips++;
+          } else {
+            upcomingTrips++;
+          }
+        }
+      });
+
+      const ctx = document.getElementById("tripChart").getContext("2d");
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Previous Trips', 'Upcoming Trips'],
+          datasets: [{
+            data: [previousTrips, upcomingTrips],
+            backgroundColor: ['#273c2c', '#fca02d'],
+            borderColor: '#fff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#273c2c',
+                font: {
+                  weight: 'bold'
+                }
+              }
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching groupTrips:", error);
+    }
+  }
+
+  // Run on page load
+  window.addEventListener("load", renderTripChart);
+  
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const signOutBtn = document.getElementById('sign-out-btn');
+  signOutBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if (confirm('Are you sure you want to sign out?')) {
+      firebase.auth().signOut()
+        .then(() => {
+          window.location.href = 'login.html';
+        })
+        .catch(error => {
+          console.error('Sign-out error:', error);
+        });
+    }
+  });
+});
+
+
+
+
+
+  </script>
+</head>
+
+<body>
+  <header>
+    <img src="AWJLogo.PNG" alt="Logo" class="logo" />
+    <h1>ADMIN DASHBOARD</h1>
+  </header>
+
+
+  <nav>
+    <a href="homepage.html" class="active">Home</a>
+    <a href="trails.html">Trails</a>
+    <a href="HikingCommunity.html">Hikers Community</a>
+    <a href="Allreviews.html">Reviews</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Reports</a>
+      <div class="dropdown-content">
+        <a href="ReportedTrails.html">Trails</a>
+        <a href="ReportedUsers.html">Users</a>
+        <a href="ReportedReviews.html">Reviews</a>
+        <a href="reportedgrouptrips.html">Trips</a>
+        <a href="ReportedHikingCom.html">Hiking Community</a>
+      </div>
+    </div>
+    
+    </div>
+    <a href="#" id="sign-out-btn">Sign Out</a>
+  </nav>
+  <div class="welcome-container">
+    <div id="notificationPopup">
+      <h3>Notifications</h3>
+      <div id="notifDetails"></div>
+      <button onclick="document.getElementById('notificationPopup').style.display = 'none';">Close</button>
+    </div>
+    <h2>Welcome, Admin!</h2>
+    <p>Manage trails, user suggestions, and reviews.</p>
+  </div>
+  <div id="notification" onclick="openNotifications()">
+    🔔 <span id="notifCount">Loading...</span>
+  </div>
+  <div class="dashboard-cards">
+
+    <div class="card">
+      <div id="trailsCount">Trails: </div>
+      <canvas id="trailChart" width="200" height="200"></canvas>
+    </div>
+
+    <div class="card">
+      <div  id="groupTripsCount">Group Trips: </div>
+      <canvas id="tripChart" width="200" height="200"></canvas>
+    </div>
+
+    <div class="card" >Active Users: 
+      <div id="UserCount"></div>
+
+    </div>
+
+    <div class="card" >Hikers posts: 
+      <div id="hikingTipsCount"></div>
+
+    </div>
+
+  </div>
+  
+  <footer>
+    &copy; 2025 AWJ Hiking App | All Rights Reserved
+  </footer>
+</body>
+
+</html>

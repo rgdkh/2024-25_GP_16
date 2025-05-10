@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reported Trails</title>
+  <link rel="stylesheet" href="stylehomepage.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f1efe4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #273c2c;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .logo {
+      height: 50px;
+      margin-right: 15px;
+    }
+    header h1 {
+      font-size: 1.5em;
+      margin: 0;
+    }
+    nav {
+      background-color: #273c2c;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 4px;
+      transition: background 0.3s;
+      font-weight: bold;
+    }
+    nav a:hover {
+      background-color: #3a5239;
+    }
+    nav a.active {
+      background-color: #f1efe4;
+      color: #273c2c;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    .admin-section {
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #273c2c;
+      color: white;
+    }
+
+    
+    .delete-button {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .delete-button:hover {
+      background-color: #a93226;
+    }
+    .dropdown-container {
+      position: relative;
+    }
+    .view-reasons-button {
+      background-color: white;
+      color: #273c2c;
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+    .view-reasons-button:hover {
+      background-color: #f0f0f0;
+    }
+    .reasons-dropdown-list {
+      margin-top: 5px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: none;
+    }
+    .reason-line {
+      padding: 2px 0;
+      font-size: 14px;
+      color: #333;
+    }
+    .status-message {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .status-message.success { color: green; }
+    .status-message.error   { color: red; }
+    .empty-message {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #555;
+    }
+    footer {
+      background-color: #273c2c;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: auto;
+    }
+    /* 1) Container */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    /* 2) Toggle button */
+    .dropbtn {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      margin: 0 10px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      position: relative;
+    }
+   
+    .dropbtn::after {
+      content: '▾';
+      margin-left: 6px;
+      font-size: 0.8em;
+      transition: transform 0.2s ease;
+    }
+    .dropdown:hover .dropbtn::after {
+      transform: rotate(180deg);
+    }
+ 
+    .dropdown-content {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      opacity: 0;
+      display: block;           
+      pointer-events: none;
+      background: #FFF;        
+      border: 1px solid #DDD;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      min-width: 180px;
+      z-index: 100;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      overflow: hidden;
+    }
+    .dropdown:hover .dropdown-content {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .dropdown-content a {
+      display: block;
+      padding: 10px 16px;
+      color: #273c2c;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s ease;
+    }
+    .dropdown-content a:not(:last-child) {
+      border-bottom: 1px solid #EEE;
+    }
+    .dropdown-content a:hover {
+      background-color: #F0F0F0;
+    }
+    nav .dropdown .dropbtn {
+      position: relative;
+      top: 9px;   
+      vertical-align: middle;
+    }
+    .pagination {
+      text-align: center;
+      margin-top: 10px;
+    }
+    #paginationControls {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .pagination-btn {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      border: none;
+      background-color: #eee;
+      border-radius: 4px;
+    }
+    .pagination-btn.active {
+      background-color: #007bff;
+      color: white;
+    }
+    /* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 768px) {
+ 
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+  nav a,
+  .dropbtn,
+  #signOutBtn {
+    width: 100%;
+    margin: 5px 0;
+    text-align: center;
+  }
+
+  table {
+    font-size: 14px;
+  }
+  th, td {
+    padding: 8px;
+  }
+
+  .pagination-btn {
+    margin: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Header stacks */
+  header {
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+  }
+  .logo {
+    margin: 10px 0;
+    height: 40px;
+  }
+  header h1 {
+    font-size: 1.2em;
+  }
+
+  .admin-section h3 {
+    font-size: 1.2em;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  thead {
+    display: none;
+  }
+  tr {
+    margin-bottom: 10px;
+  }
+  td {
+    position: relative;
+    padding-left: 50%;
+  }
+  td:before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+  td:nth-of-type(1):before { content: "Trail Name"; }
+  td:nth-of-type(2):before { content: "Reason"; }
+  td:nth-of-type(3):before { content: "Number of Reports"; }
+  td:nth-of-type(4):before { content: "Actions"; }
+
+  #paginationControls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="AWJLogo.PNG" alt="Logo" class="logo" />
+    <h1>ADMIN DASHBOARD</h1>
+  </header>
+
+  <nav>
+    <a href="homepage.html">Home</a>
+    <a href="trails.html">Trails</a>
+    <a href="HikingCommunity.html">Hikers Community</a>
+    <a href="Allreviews.html">Reviews</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Reports</a>
+      <div class="dropdown-content">
+        <a href="ReportedTrails.html" class="active">Trails</a>
+        <a href="ReportedUsers.html">Users</a>
+        <a href="ReportedReviews.html">Reviews</a>
+        <a href="reportedgrouptrips.html">Trips</a>
+        <a href="ReportedHikingCom.html">Hiking Community</a>
+      </div>
+    </div>
+    <a href="#" id="signOutBtn">Sign Out</a>
+  </nav>
+
+  <section class="admin-section">
+    <h3>Reported Trails</h3>
+    <div id="trailStatusMessage" class="status-message"></div>
+    <table id="reportedTrailsTable">
+      <thead>
+        <tr>
+          <th>Trail Name</th>
+          <th>Reason</th>
+          <th style="display: flex; align-items: center; gap: 8px;">
+            Number of Reports
+            <input
+              type="number"
+              id="reportThreshold"
+              value="1"
+              min="1"
+              style="width: 60px;"
+            />
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="trailsPagination" class="pagination"></div>
+
+    <div id="trailEmptyMessage" class="empty-message" style="display: none;">
+      No reported trails found.
+    </div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import {
+      getFirestore,
+      collectionGroup,
+      collection,
+      getDocs,
+      getDoc,
+      doc,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZl1Iu5iS0DlyTRA3mf3yKBosLzYuaODQ",
+      authDomain: "awj-app-e5077.firebaseapp.com",
+      projectId: "awj-app-e5077",
+      storageBucket: "awj-app-e5077.appspot.com",
+      messagingSenderId: "607424767081",
+      appId: "1:607424767081:web:68be77963f1c79fcfc6ef8",
+      measurementId: "G-SX282DCMQC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const thresholdInput = document.getElementById("reportThreshold");
+    const trailsPager= document.getElementById("trailsPagination");
+    const tbody     = document.querySelector("#reportedTrailsTable tbody");
+const emptyMsg  = document.getElementById("trailEmptyMessage");
+    const ROWS_PER_PAGE   = 5;
+    let   currentPage     = 1;
+    let   allTrails       = []; 
+    const unsubscribeAuth = onAuthStateChanged(auth, user => {
+      if (user) {
+        loadReportedTrails();
+      } else {
+        alert("You must be signed in to view this page.");
+        window.location.href = "login.html";
+      }
+    });
+
+    thresholdInput.addEventListener("input", () => {
+      filterRows();
+    });
+
+    async function loadReportedTrails() {
+      const tbody     = document.querySelector("#reportedTrailsTable tbody");
+      const emptyMsg  = document.getElementById("trailEmptyMessage");
+      const status    = document.getElementById("trailStatusMessage");
+      tbody.innerHTML        = "";
+      emptyMsg.style.display = "none";
+      status.style.display   = "none";
+
+      try {
+        const reportSnap = await getDocs(collectionGroup(db, "reported_trails"));
+        if (reportSnap.empty) {
+          emptyMsg.style.display = "block";
+          return;
+        }
+
+        const groups = {};
+        reportSnap.docs.forEach(rDoc => {
+          const trailPath = rDoc.ref.parent.parent.path;
+          if (!groups[trailPath]) groups[trailPath] = { reasons: {}, total: 0 };
+          const reason = rDoc.data().reason || "N/A";
+          groups[trailPath].reasons[reason] = (groups[trailPath].reasons[reason] || 0) + 1;
+          groups[trailPath].total++;
+        });
+
+        const paths = Object.keys(groups);
+        const docs  = await Promise.all(paths.map(p => getDoc(doc(db, p))));
+        const results = docs.map((trailDoc, i) => {
+          const data = trailDoc.data() || {};
+          const { reasons, total } = groups[paths[i]];
+          const reasonsHTML = Object.entries(reasons)
+            .map(([r,c]) => `<div class="reason-line">${r} – ${c}</div>`)
+            .join("");
+          return {
+            name: data.Name || "Unnamed Trail",
+            reasonsHTML,
+            total,
+            trailId: paths[i].split("/")[1]
+          };
+        });
+
+        allTrails = results;
+        
+        tbody.querySelectorAll(".view-reasons-button").forEach(btn =>
+          btn.addEventListener("click", () => {
+            const list = btn.nextElementSibling;
+            list.style.display = list.style.display === "block" ? "none" : "block";
+          })
+        );
+
+        tbody.querySelectorAll(".delete-button").forEach(btn =>
+          btn.addEventListener("click", async () => {
+            const trailId = btn.dataset.id;
+            if (!confirm(
+              "Are you sure the issue is resolved? This will delete **all** reports for this trail."
+            )) return;
+
+            const repSnap2 = await getDocs(
+              collection(db, "trails", trailId, "reported_trails")
+            );
+            await Promise.all(
+              repSnap2.docs.map(r => 
+                deleteDoc(doc(db, "trails", trailId, "reported_trails", r.id))
+              )
+            );
+            showStatus("All reports deleted successfully.", "success");
+            loadReportedTrails();
+          })
+        );
+
+        renderTrails();
+
+      } catch (err) {
+        console.error(err);
+        emptyMsg.textContent = "Error loading reported trails. Please try again.";
+        emptyMsg.style.display = "block";
+      }
+    }
+
+    function filterRows() {
+      const threshold = parseInt(thresholdInput.value, 10) || 0;
+      document.querySelectorAll("#reportedTrailsTable tbody tr").forEach(row => {
+        const count = parseInt(row.children[2].textContent, 10);
+        row.style.display = count >= threshold ? "" : "none";
+      });
+    }
+
+    document.getElementById("signOutBtn").addEventListener("click", async e => {
+      e.preventDefault();
+      if (!confirm("Are you sure you want to sign out?")) return;
+      unsubscribeAuth();
+      try {
+        await signOut(auth);
+        window.location.href = "login.html";
+      } catch (error) {
+        console.error("Error signing out:", error);
+        alert("Failed to sign out. Please try again.");
+      }
+    });
+
+    function showStatus(msg, type) {
+      const el = document.getElementById("trailStatusMessage");
+      el.textContent = msg;
+      el.className   = `status-message ${type}`;
+      el.style.display = "block";
+      setTimeout(() => el.style.display = "none", 3000);
+    }
+
+    function renderTrails() {
+      const min = parseInt(thresholdInput.value,10) || 0;
+      const filtered = allTrails.filter(t => t.total >= min);
+
+      if (!filtered.length) {
+        tbody.innerHTML = "";
+        emptyMsg.style.display = "block";
+        trailsPager.innerHTML = "";
+        return;
+      }
+      emptyMsg.style.display = "none";
+
+      const pageCount = Math.ceil(filtered.length / ROWS_PER_PAGE);
+      if (currentPage > pageCount) currentPage = pageCount;
+      const start = (currentPage - 1) * ROWS_PER_PAGE;
+      const slice = filtered.slice(start, start + ROWS_PER_PAGE);
+
+
+      tbody.innerHTML = slice.map(item => `
+        <tr>
+          <td>${item.name}</td>
+          <td>
+            <div class="dropdown-container">
+              <button class="view-reasons-button">View Reasons</button>
+              <div class="reasons-dropdown-list">${item.reasonsHTML}</div>
+            </div>
+          </td>
+          <td>${item.total}</td>
+          <td>
+            <button class="delete-button" data-id="${item.trailId}">
+              Resolve
+            </button>
+          </td>
+        </tr>
+      `).join("");
+
+tbody.querySelectorAll(".view-reasons-button").forEach(btn =>
+  btn.addEventListener("click", () => {
+    const list = btn.nextElementSibling;
+    list.style.display = list.style.display==="block"?"none":"block";
+  })
+);
+
+tbody.querySelectorAll(".delete-button").forEach(btn =>
+  btn.addEventListener("click", async () => {
+    if (!confirm("Are you sure the issue is resolved? This will delete all reports for this trail.")) return;
+    const trailId = btn.dataset.id;
+    const repSnap2 = await getDocs(collection(db, "trails", trailId, "reported_trails"));
+    await Promise.all(repSnap2.docs.map(r =>
+      deleteDoc(doc(db, "trails", trailId, "reported_trails", r.id))
+    ));
+    showStatus("All reports deleted successfully.", "success");
+    loadReportedTrails();
+  })
+);
+
+      trailsPager.innerHTML = "";
+      for (let i = 1; i <= pageCount; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = "pagination-btn" + (i===currentPage ? " active" : "");
+        btn.addEventListener("click", ()=> {
+          currentPage = i;
+          renderTrails();
+        });
+        trailsPager.appendChild(btn);
+      }
+    }
+
+
+
+
+  </script>
+
+  <footer>
+    &copy; 2025 AWJ Hiking App | All Rights Reserved
+  </footer>
+</body>
+</html>

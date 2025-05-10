@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWJ Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #ECE9DD;
+      color: #111;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background-color: #2A3A26;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    header .logo img {
+      height: 48px;
+      border-radius: 8px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #2A3A26;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background-color: #ECE9DD;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      display: inline-block;
+    }
+
+    nav a:hover {
+      background-color: #d6d1c4;
+      color: #2A3A26;
+    }
+
+    .container {
+      display: flex;
+      padding-top: 100px;
+      min-height: 100vh;
+    }
+
+    .left {
+      width: 55%;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeInLeft 1s ease-in-out;
+    }
+
+    .left h1 {
+      font-size: 44px;
+      margin-bottom: 20px;
+    }
+
+    .left p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .left .btn {
+      background-color: #ffa726;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: fit-content;
+      transition: background-color 0.3s ease;
+    }
+
+    .left .btn:hover {
+      background-color: #ff8a00;
+    }
+
+    .right {
+      width: 45%;
+      background: url('firstphoto.jpg') no-repeat center;
+      background-size: cover;
+      margin-top: -100px;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        padding-top: 80px;
+      }
+
+      .left, .right {
+        width: 100%;
+        padding: 30px;
+        height: auto;
+      }
+
+      .right {
+        height: 250px;
+        margin-top: 0;
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="AWJLogo.PNG" alt="AWJ Logo">
+    </div>
+    <nav>
+
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="left">
+      <h1>Welcome to AWJ Admin Dashboard</h1>
+      <p>This is the central control hub for managing hiking trails, user reports, and group trip. Ensure smooth and safe exploration across Saudi Arabia.</p>
+      <button class="btn" onclick="window.location.href='login.html'">Go to Log In</button>
+    </div>
+    <div class="right"></div>
+  </div>
+</body>
+</html>

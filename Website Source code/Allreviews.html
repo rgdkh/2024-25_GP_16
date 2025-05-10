@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Trails</title>
+  <link rel="stylesheet" href="stylehomepage.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f1efe4;
+    }
+    header {
+      background-color: #273c2c;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .logo {
+      height: 50px;
+      margin-right: 15px;
+    }
+    header h1 {
+      font-size: 1.5em;
+      margin: 0;
+    }
+    nav {
+      background-color: #273c2c;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 4px;
+      transition: background 0.3s;
+      font-weight: bold;
+    }
+    nav a:hover {
+      background-color: #3a5239;
+    }
+    nav a.active {
+      background-color: #f1efe4;
+      color: #273c2c;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    .admin-section {
+      padding: 20px;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #273c2c;
+      color: white;
+    }
+    #paginationControls {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .pagination-btn {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      border: none;
+      background-color: #eee;
+      border-radius: 4px;
+    }
+    .pagination-btn.active {
+      background-color: #007bff;
+      color: white;
+    }
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .filter-btn {
+      padding: 8px 16px;
+      border: none;
+      background-color: #eee;
+      color: #333;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .filter-btn.active {
+      background-color: #273c2c;
+      color: white;
+    }
+    .filter-btn:hover {
+      background-color: #3a5239;
+      color: white;
+    }
+    footer {
+      background-color: #273c2c;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: auto; 
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .delete-button {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .delete-button:hover {
+      background-color: #a93226;
+    }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  margin: 0 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  position: relative;
+}
+
+.dropbtn::after {
+  content: '▾';
+  margin-left: 6px;
+  font-size: 0.8em;
+  transition: transform 0.2s ease;
+}
+.dropdown:hover .dropbtn::after {
+  transform: rotate(180deg);
+}
+
+
+.dropdown-content {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  opacity: 0;
+  display: block;         
+  pointer-events: none;
+  background: #FFF;     
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  min-width: 180px;
+  z-index: 100;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 16px;
+  color: #273c2c;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+.dropdown-content a:not(:last-child) {
+  border-bottom: 1px solid #EEE;
+}
+.dropdown-content a:hover {
+  background-color: #F0F0F0;
+}
+
+nav .dropdown .dropbtn {
+  position: relative;
+  top: 9px;   
+  vertical-align: middle;
+}
+
+    /* === RESPONSIVE ADJUSTMENTS === */
+    @media (max-width: 768px) {
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      nav a,
+      .dropbtn,
+      #signOutBtn {
+        width: 100%;
+        margin: 5px 0;
+        text-align: center;
+      }
+
+      table {
+        font-size: 14px;
+      }
+      th, td {
+        padding: 8px;
+      }
+   
+      .filter-buttons {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .pagination-btn {
+        margin: 3px;
+      }
+    }
+
+    @media (max-width: 480px) {
+ 
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+      }
+      .logo {
+        margin: 10px 0;
+        height: 40px;
+      }
+      header h1 {
+        font-size: 1.2em;
+      }
+    
+      .admin-header h3 {
+        font-size: 1.2em;
+      }
+   
+      .filter-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead {
+        display: none;
+      }
+      tr {
+        margin-bottom: 10px;
+      }
+      td {
+        position: relative;
+        padding-left: 50%;
+      }
+      td:before {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 45%;
+        white-space: nowrap;
+        font-weight: bold;
+      }
+      td:nth-of-type(1):before { content: "Review"; }
+      td:nth-of-type(2):before { content: "Review By"; }
+      td:nth-of-type(3):before { content: "Date"; }
+      td:nth-of-type(4):before { content: "Source"; }
+      td:nth-of-type(5):before { content: "Actions"; }
+      #paginationControls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="AWJLogo.PNG" alt="Logo" class="logo" />
+    <h1>ADMIN DASHBOARD</h1>
+  </header>
+
+  <nav>
+    <a href="homepage.html">Home</a>
+    <a href="trails.html">Trails</a>
+    <a href="HikingCommunity.html">Hikers Community</a>
+    <a href="Allreviews.html" class="active">Reviews</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Reports</a>
+      <div class="dropdown-content">
+        <a href="ReportedTrails.html">Trails</a>
+        <a href="ReportedUsers.html">Users</a>
+        <a href="ReportedReviews.html">Reviews</a>
+        <a href="reportedgrouptrips.html">Trips</a>
+        <a href="ReportedHikingCom.html">Hiking Community</a>
+      </div>
+    </div>
+    <a href="#" id="signOutBtn">Sign Out</a> 
+  </nav>
+
+  <section class="admin-section">
+    <div class="admin-header">
+      <h3>Reviews</h3>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All Reviews</button>
+        <button class="filter-btn" data-filter="Trail">Trail Reviews</button>
+        <button class="filter-btn" data-filter="GroupTrip">Group Trip Reviews</button>
+      </div>
+    </div>
+
+    <table id="trailsTable">
+      <thead>
+        <tr>
+          <th>Review</th>
+          <th>Review By</th>
+          <th>Date</th>
+          <th>Source</th>             
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div id="paginationControls"></div>
+  </section>
+
+  <footer>
+    &copy; 2025 AWJ Hiking App | All Rights Reserved
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      getDocs,
+      collection,
+      collectionGroup,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyBZl1IuS0DlyTRA3mf3yKBosLzYuaODQ",
+      authDomain: "awj-app-e5077.firebaseapp.com",
+      projectId: "awj-app-e5077",
+    });
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let allReviews = [];
+    let currentPage = 1;
+    const rowsPerPage = 5;
+    let currentFilter = "all";
+    const userMap = new Map();
+  
+    function formatDate(ts) {
+      const date = ts.seconds
+        ? new Date(ts.seconds * 1000)
+        : new Date(ts);
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day:   'numeric',
+        year:  'numeric',
+        hour:  'numeric',
+        minute:'2-digit',
+        hour12:true
+      });
+    }
+  
+    async function preloadUsers() {
+      const snap = await getDocs(collection(db, "users"));
+      snap.forEach(u => userMap.set(u.id, u.data().name || "Unnamed"));
+    }
+    document.getElementById("signOutBtn").addEventListener("click", async e => {
+  e.preventDefault();
+  // 1) Show "Are you sure?" prompt
+  if (!confirm("Are you sure you want to sign out?")) return;
+
+  // 2) If they clicked "OK", proceed to sign out
+  try {
+    await signOut(auth);
+    window.location.href = "login.html"; 
+  } catch (error) {
+    console.error("Error signing out:", error);
+    alert("Failed to sign out. Please try again.");
+  }
+});
+
+    async function fetchAllReviews() {
+      const snap = await getDocs(collectionGroup(db, "reviews"));
+      allReviews = snap.docs.map(docSnap => {
+        const d = docSnap.data();
+        const path = docSnap.ref.path;
+        const isTrail = path.includes("trails/");
+        const isTrip  = path.includes("GroupTrips/");
+        return {
+          id:     docSnap.id,
+          ref:    docSnap.ref,
+          review: d.reviewText || "No review text",
+          user:   userMap.get(d.userId) || "Unknown",
+          date:   d.createdAt ? formatDate(d.createdAt) : "-",
+          source: isTrail ? "Trail" : isTrip ? "GroupTrip" : "Other"
+        };
+      });
+    }
+  
+    function renderPaginatedReviews() {
+      const tbody = document.querySelector("#trailsTable tbody");
+      const pager = document.getElementById("paginationControls");
+  
+      const filtered = currentFilter === "all"
+        ? allReviews
+        : allReviews.filter(r => r.source === currentFilter);
+  
+      const totalPages = Math.ceil(filtered.length / rowsPerPage);
+      const start = (currentPage - 1) * rowsPerPage;
+      const pageData = filtered.slice(start, start + rowsPerPage);
+  
+      tbody.innerHTML = pageData.map(item => `
+        <tr>
+          <td>${item.review}</td>
+          <td>${item.user}</td>
+          <td>${item.date}</td>
+          <td>${item.source}</td>
+          <td>
+            <button class="delete-button" data-id="${item.id}">Delete</button>
+          </td>
+        </tr>
+      `).join("");
+  
+      pager.innerHTML = "";
+      for (let i = 1; i <= totalPages; i++) {
+        const b = document.createElement("button");
+        b.className = "pagination-btn" + (i === currentPage ? " active" : "");
+        b.textContent = i;
+        b.onclick = () => {
+          currentPage = i;
+          renderPaginatedReviews();
+        };
+        pager.appendChild(b);
+      }
+  
+      tbody.onclick = async e => {
+        if (!e.target.matches(".delete-button")) return;
+        const id = e.target.dataset.id;
+        if (!confirm("Delete this review?")) return;
+        await deleteDoc(allReviews.find(r => r.id === id).ref);
+        await fetchAllReviews();
+        renderPaginatedReviews();
+      };
+    }
+  
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.dataset.filter;
+        currentPage = 1;
+        renderPaginatedReviews();
+      });
+    });
+  
+    window.onload = async () => {
+      await preloadUsers();
+      await fetchAllReviews();
+      renderPaginatedReviews();
+    };
+  </script>
+  
+  
+</body>
+</html>
